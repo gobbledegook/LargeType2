@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'aLgrTepy2e' target in the 'aLgrTepy2e' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
