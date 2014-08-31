@@ -17,19 +17,16 @@
 			 userData:(NSString *)userData error:(NSString **)error {
 	launchedAsService = YES;
 	
-	if (floor(NSAppKitVersionNumber) > 949) { // 10.6 only
-		// Test for strings on the pasteboard.
-		if (![pboard canReadObjectForClasses:[NSArray arrayWithObject:
-											  [NSString class]]
-									 options:[NSDictionary dictionary]]) {
-			*error = NSLocalizedString(@"Error: couldn't encrypt text.",
-									   @"pboard couldn't give string.");
-			return;
-		}
+	// Test for strings on the pasteboard.
+	if (![pboard canReadObjectForClasses:[NSArray arrayWithObject:[NSString class]]
+								 options:[NSDictionary dictionary]]) {
+		*error = NSLocalizedString(@"Error: couldn't encrypt text.",
+								   @"pboard couldn't give string.");
+		return;
 	}
 	
 	// Get the string.
-	NSString *s = [pboard stringForType:NSStringPboardType]; // 10.6: NSPasteboardTypeString];
+	NSString *s = [pboard stringForType:NSPasteboardTypeString];
 	[[window contentView] setDisplayString:s demo:NO];
 }
 
