@@ -49,6 +49,7 @@
 									  demo:YES];
 	[prefsWindow center];
 	[prefsWindow makeKeyAndOrderFront:nil];
+	[NSApp activateIgnoringOtherApps:YES];
 }
 
 - (void)largeTextDone:(NSNotification *)n {
