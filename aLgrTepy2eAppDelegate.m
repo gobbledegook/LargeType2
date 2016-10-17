@@ -2,24 +2,26 @@
 //  aLgrTepy2eAppDelegate.m
 //
 //  Created 2009.09.01.
-//  Copyright 2009 Dominic Yu. All rights reserved.
+//  Copyright 2009-2016 Dominic Yu. All rights reserved.
 //
 
 #import "aLgrTepy2eAppDelegate.h"
 #import "DYLargeTextView.h"
 
-@implementation aLgrTepy2eAppDelegate
+@interface aLgrTepy2eAppDelegate () {
+	BOOL launchedAsService;
+}
+@end
 
-@synthesize window;
-@synthesize prefsWindow;
+@implementation aLgrTepy2eAppDelegate
 
 - (void)largeType:(NSPasteboard *)pboard
 			 userData:(NSString *)userData error:(NSString **)error {
 	launchedAsService = YES;
 	
 	// Test for strings on the pasteboard.
-	if (![pboard canReadObjectForClasses:[NSArray arrayWithObject:[NSString class]]
-								 options:[NSDictionary dictionary]]) {
+	if (![pboard canReadObjectForClasses:@[[NSString class]]
+								 options:@{}]) {
 		*error = NSLocalizedString(@"Error: couldn't encrypt text.",
 								   @"pboard couldn't give string.");
 		return;
@@ -27,15 +29,15 @@
 	
 	// Get the string.
 	NSString *s = [pboard stringForType:NSPasteboardTypeString];
-	[[window contentView] setDisplayString:s demo:NO];
+	[_window.contentView setDisplayString:s demo:NO];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(largeTextDone:)
 												 name:NSWindowDidResignKeyNotification
-											   object:window];
-	[NSApp setServicesProvider:self];
+											   object:_window];
+	NSApp.servicesProvider = self;
 	[NSTimer scheduledTimerWithTimeInterval:1.0 target:self
 								   selector:@selector(showPrefsWindow:)
 								   userInfo:nil repeats:NO];
@@ -45,10 +47,10 @@
 	if (launchedAsService)
 		return;
 
-	[[window contentView] setDisplayString:@"A noble spirit\nembiggens the smallest man."
+	[_window.contentView setDisplayString:@"A noble spirit\nembiggens the smallest man."
 									  demo:YES];
-	[prefsWindow center];
-	[prefsWindow makeKeyAndOrderFront:nil];
+	[_prefsWindow center];
+	[_prefsWindow makeKeyAndOrderFront:nil];
 	[NSApp activateIgnoringOtherApps:YES];
 }
 

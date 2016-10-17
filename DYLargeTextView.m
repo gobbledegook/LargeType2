@@ -2,7 +2,7 @@
 //  DYLargeTextView.m
 //
 //  Created 2009.09.02.
-//  Copyright 2009 Dominic Yu. All rights reserved.
+//  Copyright 2009-2016 Dominic Yu. All rights reserved.
 //
 
 #import "DYLargeTextView.h"
@@ -10,14 +10,20 @@
 #define MIN_FONT_SIZE 48
 #define MAX_FONT_SIZE 200
 
+@interface DYLargeTextView () {
+	NSString *displayString;
+	CGFloat fontSize;
+}
+@end
+
 @implementation DYLargeTextView
 
 - (void)drawRect:(NSRect)dirtyRect {
-	NSRect r = [self bounds];
+	NSRect r = self.bounds;
 	
 	// draw the window background
     [[NSColor clearColor] set];
-    NSRectFill([self bounds]);
+    NSRectFill(self.bounds);
 	NSBezierPath* thePath = [NSBezierPath bezierPath];
 	[thePath appendBezierPathWithRoundedRect:r xRadius:20 yRadius:20];
     [[[NSColor blackColor] colorWithAlphaComponent:0.65] set];
@@ -26,20 +32,18 @@
 	// make par style: centered
 	NSMutableParagraphStyle *ps;
 	ps = [[[NSMutableParagraphStyle alloc] init] autorelease];
-	[ps setAlignment:NSCenterTextAlignment];
+	ps.alignment = NSCenterTextAlignment;
 	
 	// shadowed text
 	NSShadow *sh = [[[NSShadow alloc] init] autorelease];
-	[sh setShadowBlurRadius:5];
-	[sh setShadowOffset:NSMakeSize(5, -5)];
+	sh.shadowBlurRadius = 5;
+	sh.shadowOffset = NSMakeSize(5, -5);
 	
 	// make attributes dict: bold system font, white on black
-	NSDictionary *atts = [NSDictionary dictionaryWithObjectsAndKeys:
-						  [NSFont boldSystemFontOfSize:fontSize], NSFontAttributeName,
-						  [NSColor whiteColor], NSForegroundColorAttributeName,
-						  sh, NSShadowAttributeName,
-						  ps, NSParagraphStyleAttributeName,
-						  nil];
+	NSDictionary *atts = @{NSFontAttributeName: [NSFont boldSystemFontOfSize:fontSize],
+						  NSForegroundColorAttributeName: [NSColor whiteColor],
+						  NSShadowAttributeName: sh,
+						  NSParagraphStyleAttributeName: ps};
 	
 	// adjust for the padding
 	r.size.height -= 15;
@@ -58,13 +62,10 @@
 	// approximate font size
 	// find longest line and start from there
 	NSUInteger n = 1; // avoid divide-by-zero, just in case
-	NSArray *a = [s componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-	NSUInteger i;
-	NSUInteger numStrings = [a count];
-	for (i = 0; i < numStrings; ++i) {
-		if ([[a objectAtIndex:i] length] > n) n = [[a objectAtIndex:i] length];
+	for (NSString *line in [s componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
+		if (line.length > n) n = line.length;
 	}
-	NSRect visFrame = [[NSScreen mainScreen] visibleFrame]; // exclude the menubar, Dock, etc.
+	NSRect visFrame = [NSScreen mainScreen].visibleFrame; // exclude the menubar, Dock, etc.
 	CGFloat w = visFrame.size.width - 50;
 	CGFloat h = visFrame.size.height;
 	CGFloat size = w / n;
@@ -77,15 +78,14 @@
 			size = MIN_FONT_SIZE;
 		}
 		NSMutableDictionary *atts = [[NSMutableDictionary alloc] init];
-		[atts setObject:[NSFont boldSystemFontOfSize:size] forKey:NSFontAttributeName];
+		atts[NSFontAttributeName] = [NSFont boldSystemFontOfSize:size];
 		
 		fontSize = size;
 		CGFloat textWidth = [s sizeWithAttributes:atts].width;
 		
 		while (textWidth < w) {
 			fontSize = size;
-			[atts setObject:[NSFont boldSystemFontOfSize:++size]
-					 forKey:NSFontAttributeName];
+			atts[NSFontAttributeName] = [NSFont boldSystemFontOfSize:++size];
 			textWidth = [s sizeWithAttributes:atts].width;
 		}
 	}
@@ -93,8 +93,7 @@
 	// figure out how big the actual text will be
 	NSRect strRect = [s boundingRectWithSize:NSMakeSize(w, h)
 									 options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
-								  attributes:[NSDictionary dictionaryWithObject:[NSFont boldSystemFontOfSize:fontSize]
-																		 forKey:NSFontAttributeName]];
+								  attributes:@{NSFontAttributeName:[NSFont boldSystemFontOfSize:fontSize]}];
 	NSSize windSize = strRect.size;
 
 	// make sure there's some empty space around the window
@@ -105,15 +104,14 @@
 	windSize.height += 40;
 	
 	// size our window as calculated
-	NSWindow *myWindow = [self window];
-	NSRect r = [myWindow frame];
+	NSWindow *myWindow = self.window;
+	NSRect r = myWindow.frame;
 	r.size = windSize;
 	// and center it
 	r.origin.x = visFrame.origin.x + (w+50-windSize.width)/2;
 	r.origin.y = visFrame.origin.y + (demoMode ? 10 : (h-windSize.height)/2);
-	[myWindow setFrame:r display:YES];
+	[myWindow setFrame:NSIntegralRect(r) display:YES];
 	[myWindow makeKeyAndOrderFront:nil];
-	//[self setNeedsDisplay:YES];
 }
 
 @end

@@ -2,20 +2,23 @@
 //  DYLargeTextWindow.m
 //
 //  Created 2009.09.03.
-//  Copyright 2009 Dominic Yu. All rights reserved.
+//  Copyright 2009-2016 Dominic Yu. All rights reserved.
 //
 
 #import "DYLargeTextWindow.h"
 
+@interface DYLargeTextWindow () {
+	NSPoint initialLocation; // save initial click location when dragging
+}
+@end
+
 @implementation DYLargeTextWindow
 
-@synthesize initialLocation;
-
-- (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag {
+- (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag {
     // NSBorderlessWindowMask: no title bar.
     self = [super initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
     if (self != nil) {
-        [self setAlphaValue:1.0]; // no transparency here, only the black background in the View
+        self.alphaValue = 1.0; // no transparency here, only the black background in the View
         [self setOpaque:NO];
     }
     return self;
@@ -33,28 +36,22 @@
  */
 - (void)mouseDown:(NSEvent *)theEvent {
     // Get the mouse location in window coordinates.
-    self.initialLocation = [theEvent locationInWindow];
+    initialLocation = theEvent.locationInWindow;
 }
 
 /*
  Once the user starts dragging the mouse, move the window with it.
  */
 - (void)mouseDragged:(NSEvent *)theEvent {
-//    NSRect screenVisibleFrame = [[NSScreen mainScreen] visibleFrame];
-    NSRect windowFrame = [self frame];
+    NSRect windowFrame = self.frame;
     NSPoint newOrigin = windowFrame.origin;
 	
     // Get the mouse location in window coordinates.
-    NSPoint currentLocation = [theEvent locationInWindow];
+    NSPoint currentLocation = theEvent.locationInWindow;
     // Update the origin with the difference between the new mouse location and the old mouse location.
     newOrigin.x += (currentLocation.x - initialLocation.x);
     newOrigin.y += (currentLocation.y - initialLocation.y);
 	
-    // Don't let window get dragged up under the menu bar
-//    if ((newOrigin.y + windowFrame.size.height) > (screenVisibleFrame.origin.y + screenVisibleFrame.size.height)) {
-//        newOrigin.y = screenVisibleFrame.origin.y + (screenVisibleFrame.size.height - windowFrame.size.height);
-//    }
-    
     // Move the window to the new location
     [self setFrameOrigin:newOrigin];
 }

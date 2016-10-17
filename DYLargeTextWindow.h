@@ -7,11 +7,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DYLargeTextWindow : NSWindow {
-    // This point is used in dragging to mark the initial click location
-    NSPoint initialLocation;
-}
-
-@property (assign) NSPoint initialLocation;
+@interface DYLargeTextWindow : NSWindow
 
 @end

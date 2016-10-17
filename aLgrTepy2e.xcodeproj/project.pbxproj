@@ -156,7 +156,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0730;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "aLgrTepy2e" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -236,6 +236,7 @@
 				INFOPLIST_FILE = "aLgrTepy2e-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_BUNDLE_IDENTIFIER = net.blyt.algrtepy2e;
 				PRODUCT_NAME = LargeType2;
 				SDKROOT = macosx;
 			};
@@ -254,6 +255,7 @@
 				INFOPLIST_FILE = "aLgrTepy2e-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_BUNDLE_IDENTIFIER = net.blyt.algrtepy2e;
 				PRODUCT_NAME = LargeType2;
 				SDKROOT = macosx;
 			};
@@ -275,7 +277,6 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

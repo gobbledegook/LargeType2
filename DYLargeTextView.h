@@ -7,10 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DYLargeTextView : NSView {
-	NSString *displayString;
-	CGFloat fontSize;
-}
+@interface DYLargeTextView : NSView
 
 - (void)setDisplayString:(NSString *)s demo:(BOOL)demoMode;
 
