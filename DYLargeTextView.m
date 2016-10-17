@@ -92,7 +92,7 @@
 	
 	// figure out how big the actual text will be
 	NSRect strRect = [s boundingRectWithSize:NSMakeSize(w, h)
-									 options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading|NSStringDrawingUsesDeviceMetrics
+									 options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
 								  attributes:[NSDictionary dictionaryWithObject:[NSFont boldSystemFontOfSize:fontSize]
 																		 forKey:NSFontAttributeName]];
 	NSSize windSize = strRect.size;
