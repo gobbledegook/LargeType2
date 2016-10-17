@@ -61,14 +61,15 @@
 	
 	// approximate font size
 	// find longest line and start from there
-	NSUInteger n = 1; // avoid divide-by-zero, just in case
+	NSUInteger maxLength = 1; // avoid divide-by-zero, just in case
 	for (NSString *line in [s componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
-		if (line.length > n) n = line.length;
+		if (line.length > maxLength)
+			maxLength = line.length;
 	}
 	NSRect visFrame = [NSScreen mainScreen].visibleFrame; // exclude the menubar, Dock, etc.
 	CGFloat w = visFrame.size.width - 50;
 	CGFloat h = visFrame.size.height;
-	CGFloat size = w / n;
+	CGFloat size = w / maxLength;
 
 	// calculate appropriate font size
 	if (size > MAX_FONT_SIZE) {
@@ -76,6 +77,8 @@
 	} else {
 		if (size < MIN_FONT_SIZE) {
 			size = MIN_FONT_SIZE;
+		} else {
+			size = floor(size);
 		}
 		NSMutableDictionary *atts = [[NSMutableDictionary alloc] init];
 		atts[NSFontAttributeName] = [NSFont boldSystemFontOfSize:size];
@@ -88,6 +91,7 @@
 			atts[NSFontAttributeName] = [NSFont boldSystemFontOfSize:++size];
 			textWidth = [s sizeWithAttributes:atts].width;
 		}
+		[atts release];
 	}
 	
 	// figure out how big the actual text will be
