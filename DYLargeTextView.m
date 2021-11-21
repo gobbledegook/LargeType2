@@ -32,7 +32,7 @@
 	// make par style: centered
 	NSMutableParagraphStyle *ps;
 	ps = [[[NSMutableParagraphStyle alloc] init] autorelease];
-	ps.alignment = NSCenterTextAlignment;
+	ps.alignment = NSTextAlignmentCenter;
 	
 	// shadowed text
 	NSShadow *sh = [[[NSShadow alloc] init] autorelease];
