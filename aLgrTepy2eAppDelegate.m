@@ -33,6 +33,14 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+	NSString *argumentString = [standardDefaults stringForKey:@"s"];
+	if (argumentString) {
+		launchedAsService = YES;
+		[_window.contentView setDisplayString:argumentString demo:NO];
+		[NSApp activateIgnoringOtherApps:YES];
+	}
+
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(largeTextDone:)
 												 name:NSWindowDidResignKeyNotification
