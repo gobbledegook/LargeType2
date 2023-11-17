@@ -20,6 +20,7 @@
     if (self != nil) {
         self.alphaValue = 1.0; // no transparency here, only the black background in the View
         [self setOpaque:NO];
+		self.backgroundColor = [NSColor clearColor];
     }
     return self;
 }
