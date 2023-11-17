@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>LargeType2 1.2, Copyright 2009-2021 Dominic Yu</string>
+	<string>LargeType2 1.2.1, Copyright 2009-2023 Dominic Yu</string>
 	<key>CFBundleIconFile</key>
 	<string>app.icns</string>
 	<key>CFBundleIdentifier</key>
